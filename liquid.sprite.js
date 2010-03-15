@@ -1,16 +1,22 @@
-Liquid.Sprite = function(width, height) {
-	this.x				 = 0;
-	this.y               = 0;
-	this.width           = width;
-	this.height          = height;
-	this._canvas 		 = document.createElement('canvas');
-	this._canvas.width   = width;
-	this._canvas.height  = height;
-	this.context         = this._canvas.getContext("2d");
-}
+Liquid.Sprite = function f_Liquid_Sprite (width, height) {
+	//console.log('Liquid.Sprite', width, height);
+	
+	var sprite = this;
+	
+	var canvas = sprite.canvas = document.createElement('canvas');
+	sprite.width = canvas.width = width;
+	sprite.height = canvas.height = height;
+	sprite.context = canvas.getContext('2d');
+	
+	sprite.halfWidth = width / 2;
+	sprite.halfHeight = height / 2;
+};
 
 Liquid.Sprite.prototype = {
-	drawOnContext : function(context) {
-		context.drawImage(this._canvas, this.x, this.y);
+	draw : function f_Liquid_Sprite_draw (context, x, y) {
+		context.drawImage(this.canvas, x, y);
 	}
-}
+};
+
+Liquid.Sprite.cache = {};
+Liquid.Sprite.cache.size = 0;
