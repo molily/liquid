@@ -1,0 +1,9 @@
+h1. Liquid
+
+Liquid is a javascript library which uses the HTML5 canvas element to provide an easy interface for creating animations and GUIs.
+
+Major rewrite of http://github.com/sebastiandeutsch/liquid
+
+h1. License
+
+Copyright (c) 2009 9elements, released under the MIT license
