@@ -68,7 +68,20 @@ Liquid.Stage.prototype = {
 			}, 250);
 		}
 		
-	}
+	},
 	
+	setupPerformanceProfiling : function f_Liquid_stage_setupDimensions () {
+		var stage = this;
+		
+		document.addEventListener('keypress', function f_document_key_pressed (e) {
+			var key = String.fromCharCode(e.which || e.charCode);
+			if (key == 'r') {
+				stage.measure = true;
+			} else if (key == 'p') {
+				stage.profile = true;
+			}
+		}, false);
+	
+	}
 	
 };
