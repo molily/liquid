@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<title>Liquid Example</title>
+<style>
+#cv {
+	outline: 1px solid red;
+	display: block;
+}
+
+#cv.dragging {
+	cursor: move;
+}
+
+#cv.hover {
+	cursor: pointer;
+}
+</style>
+<script src="dummyconsole.js"></script>
+<script src="liquid.lib.js"></script>
+<script src="liquid.stage.base.js"></script>
+<script src="liquid.stage.render.js"></script>
+<script src="liquid.stage.events.js"></script>
+<script src="liquid.sprite.js"></script>
+<script src="liquid.circle.js"></script>
+<script src="liquid.line.js"></script>
+<script src="liquid.rectangle.js"></script>
+<script src="liquid.workers.js"></script>
+</head>
+<body>
+
+<canvas width="900" height="400" id="cv"></canvas>
+
+<script>
+(function () {
+
+	function rand (min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	function MyRenderObject () {
+		this.x = rand(0, stage.width);
+		this.y = rand(0, stage.height);
+	}
+	
+	MyRenderObject.prototype = {
+		// Rendering Options
+		visible : true,
+		tainted : true,
+		renderDirectly : true,
+		
+		active : false,
+		
+		circle : new Liquid.Circle,
+		radius : 0,
+		
+		radii : {
+			normal : 5,
+			active : 7
+		},
+		
+		styles : {
+			normal : {
+				stroke : { r : 0, g : 150, b : 0 },
+				fill : [0, 180, 0]
+			},
+			active : {
+				stroke : [0, 200, 0],
+				fill : [0, 220, 0]
+			}
+		},
+		
+		enterframe : function () {
+			this.x += rand(1, 3);
+			this.styles.normal[]
+		},
+		
+		mouseover : function () {
+			stage.setStatus('hover');
+			this.active = true;
+		},
+		
+		mouseout : function () {
+			stage.clearStatus();
+			this.active = false;
+		},
+		
+		click : function () {
+			this.active = true;
+		},
+		
+		boundingBox : null,
+		lastBoundingBoxFrame : null,
+		
+		getBoundingBox : function f_AbstractNode_getBoundingBox (frame) {
+			var ro = this;
+			
+			var tolerance = 3;
+			var radius = (ro.currentRadius / 2) + tolerance;
+			
+			var x = ro.x;
+			var y = ro.y;
+			
+			var boundingBox = {
+				x1 : x - radius,
+				y1 : y - radius,
+				x2 : x + radius,
+				y2 : y + radius
+			};
+			
+			ro.boundingBox = boundingBox;
+			if (frame) {
+				//console.log('getBoundingBox called with frame', frame);
+				ro.lastBoundingBoxFrame = frame;
+			}
+			
+			return boundingBox;
+		},
+		
+		draw : function (context) {
+			var ro = this;
+			var active = ro.active;
+		
+			// Get radius
+			var radius = ro.radii[active ? 'active' : 'normal'];
+			ro.currentRadius = radius;
+			
+			// Get style
+			var styles = ro.styles[active ? 'active' : 'normal'];
+			
+			// Draw circle
+			ro.circle.draw(
+				context,
+				ro.x, ro.y,
+				radius,
+				styles.stroke,
+				styles.fill
+			);
+		}
+	};
+	
+	var stage;
+	
+	function init () {
+		var canvas = document.getElementById('cv');
+		stage = new Liquid.Stage(canvas);
+		stage.orderByZIndex = false;
+		
+		for (var i = 0; i < 100; i++) {
+			var ro = new MyRenderObject();
+			stage.addChild(ro);
+		}
+		
+		stage.enterframe(function () {
+			stage.tainted = true;
+		});
+	}
+	
+	init();
+
+})();
+</script>
+
+</body>
+</html>
