@@ -41,6 +41,7 @@
 	function MyRenderObject () {
 		this.x = rand(0, stage.width);
 		this.y = rand(0, stage.height);
+		this.force = rand(1, 5);
 	}
 	
 	MyRenderObject.prototype = {
@@ -62,17 +63,19 @@
 		styles : {
 			normal : {
 				stroke : { r : 0, g : 150, b : 0 },
-				fill : [0, 180, 0]
+				fill : { r : 0, g : 180, b : 0 }
 			},
 			active : {
-				stroke : [0, 200, 0],
-				fill : [0, 220, 0]
+				stroke : { r : 0, g : 200, b : 0 },
+				fill : { r : 0, g : 220, b : 0 }
 			}
 		},
 		
 		enterframe : function () {
-			this.x += rand(1, 3);
-			this.styles.normal[]
+			this.x += this.force;
+			if (this.x > stage.width) {
+				this.x = 0;
+			}
 		},
 		
 		mouseover : function () {
@@ -127,14 +130,16 @@
 			
 			// Get style
 			var styles = ro.styles[active ? 'active' : 'normal'];
+			var stroke = styles.stroke;
+			var fill = styles.fill;
 			
 			// Draw circle
 			ro.circle.draw(
 				context,
 				ro.x, ro.y,
 				radius,
-				styles.stroke,
-				styles.fill
+				'rgb(' + stroke.r + ',' + stroke.g + ',' + stroke.b + ')',
+				'rgb(' + fill.r + ',' + fill.g + ',' + fill.b + ')'
 			);
 		}
 	};
@@ -143,7 +148,9 @@
 	
 	function init () {
 		var canvas = document.getElementById('cv');
-		stage = new Liquid.Stage(canvas);
+		stage = new Liquid.Stage(canvas, {
+			frameRate : 25
+		});
 		stage.orderByZIndex = false;
 		
 		for (var i = 0; i < 100; i++) {
