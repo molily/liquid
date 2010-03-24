@@ -13,6 +13,7 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 	eventTypesToListen : ['mousemove', 'mousedown', 'mouseup', 'click', 'mousewheel', 'DOMMouseScroll'],
 	
 	addEventListener : function f_Liquid_stage_addEventListener (eventType, handler, capturing) {
+		//console.log('addEventListener', eventType, handler, capturing);
 		var stage = this;
 		var eventHandlers = stage.eventHandlers[eventType];
 		if (!eventHandlers) {
@@ -179,16 +180,17 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 		
 		if (eventType == 'mousemove') {
 			// Special treatment for mousemove events
-			//stage.distributeMousemove(e);
+			stage.distributeMousemove(e);
 			return;
 		}
 		
 		var isClickEvent = eventType == 'click' || eventType == 'mousedown' || eventType == 'mouseup';
 		
-		//console.log('f_Liquid_Stage_distributeEvent', eventType, 'to', renderList.length, 'objects');
 		
 		// Iterate the sorted render list bottom-up (bubbling)
 		var renderList = stage.renderList;
+		//console.log('f_Liquid_Stage_distributeEvent', eventType, 'to', renderList.length, 'objects');
+		
 		var i = renderList.length;
 		while (i--) {
 			var renderObject = renderList[i];
