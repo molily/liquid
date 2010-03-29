@@ -42,7 +42,7 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 		
 		// Add a listener for each event at the canvas element
 		var boundHandler = stage.handleEvent.bind(stage);
-		var eventTypes = stage.eventTypesToListen;	
+		var eventTypes = stage.eventTypesToListen;
 		for (var i = 0, eventType; eventType = eventTypes[i]; i++) {
 			canvas.addEventListener(eventType, boundHandler, false);
 		}
