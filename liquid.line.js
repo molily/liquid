@@ -1,5 +1,3 @@
-Liquid = window.Liquid || {};
-
 Liquid.Line = new Function;
 
 Liquid.Line.prototype = {
