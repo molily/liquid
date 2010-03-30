@@ -108,7 +108,7 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 			}
 			
 			// Iterate the renderList 
-			for (var i = 0, renderObject; renderObject = renderList[i]; i++) {
+			for (i = 0; renderObject = renderList[i]; i++) {
 				
 				//console.log('consider rendering ', renderObject, ' directly?', renderObject.renderDirectly, ' visible?', renderObject.visible);
 				

@@ -27,7 +27,7 @@
 	if (!console.profile && !console.profileEnd) {
 		console.profile = startTiming;
 		console.profileEnd = stopTiming;
-	};
+	}
 	
 	function startTiming (name) {
 		startTime = new Date;
@@ -39,3 +39,4 @@
 	}
 	
 })(this);
+

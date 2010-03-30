@@ -29,7 +29,8 @@ Liquid.Workers = {
 	},
 	
 	workerError : function f_Liquid_Workers_workerError (e) {
-		console.log('Error in worker', e.filename, ':', e.message, 'in line', e.lineno);
+		//console.log('Error in worker', e.filename, ':', e.message, 'in line', e.lineno);
+		throw 'Error in worker ' + e.filename + ': ' + e.message + ' in line ' + e.lineno;
 	},
 	
 	createJob : function f_Liquid_Workers_createJob (job) {

@@ -9,7 +9,7 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 	// Event handler function store
 	eventHandlers : {},
 	
-	eventTypes : ['enterframe', 'mousemove', 'mousedown', 'mouseup', 'click', 'mousewheel',],
+	eventTypes : ['enterframe', 'mousemove', 'mousedown', 'mouseup', 'click', 'mousewheel'],
 	eventTypesToListen : ['mousemove', 'mousedown', 'mouseup', 'click', 'mousewheel', 'DOMMouseScroll'],
 	
 	addEventListener : function f_Liquid_stage_addEventListener (eventType, handler, capturing) {
@@ -42,8 +42,8 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 		
 		// Add a listener for each event at the canvas element
 		var boundHandler = stage.handleEvent.bind(stage);
-		var eventTypes = stage.eventTypesToListen;
-		for (var i = 0, eventType; eventType = eventTypes[i]; i++) {
+		eventTypes = stage.eventTypesToListen;
+		for (i = 0; eventType = eventTypes[i]; i++) {
 			canvas.addEventListener(eventType, boundHandler, false);
 		}
 	},
@@ -69,10 +69,12 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 		
 		var stageWideHandlers = stage.eventHandlers[eventType];
 		
+		var i, handlers, handler, returnValue;
+		
 		// Call stage-wide handlers for the CAPTURING phase
-		var handlers = stageWideHandlers.capturing;
-		for (var i = 0, handler; handler = handlers[i]; i++) {
-			var returnValue = handler.call(stage, e);
+		handlers = stageWideHandlers.capturing;
+		for (i = 0; handler = handlers[i]; i++) {
+			returnValue = handler.call(stage, e);
 			if (returnValue === false) {
 				//console.log('A stage-wide handler stopped the stage-wide propagation of', eventType, 'during capturing');
 				return;
@@ -80,7 +82,7 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 		}
 		
 		// Distribute events to render objects
-		var returnValue = stage.distributeEvent(e);
+		returnValue = stage.distributeEvent(e);
 		// Stop stage-wide propagation if a render object handler returned false
 		if (returnValue === false) {
 			//console.log('A renderObject handler stopped the stage-wide propagation of', eventType);
@@ -88,9 +90,9 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 		}
 		
 		// Call stage-wide handlers for the BUBBLING phase
-		var handlers = stageWideHandlers.bubbling;
-		for (var i = 0, handler; handler = handlers[i]; i++) {
-			var returnValue = handler.call(stage, e);
+		handlers = stageWideHandlers.bubbling;
+		for (i = 0; handler = handlers[i]; i++) {
+			returnValue = handler.call(stage, e);
 			if (returnValue === false) {
 				//console.log('A stage-wide handler stopped the stage-wide propagation of', eventType, 'during bubbling');
 				return;
@@ -105,12 +107,13 @@ Liquid.Lib.extend(Liquid.Stage.prototype, {
 			return false;
 		}
 		
+		var boundingBox;
 		if (renderObject.lastBoundingBoxFrame == stage.lastDrawnFrame) {
 			//console.log(renderObject.lastBoundingBoxFrame, stage.lastDrawnFrame, '> reuse bounding box');
-			var boundingBox = renderObject.boundingBox;
+			boundingBox = renderObject.boundingBox;
 		} else {
 			//console.log(renderObject.lastBoundingBoxFrame, stage.lastDrawnFrame, '> get new bounding box');
-			var boundingBox = renderObject.getBoundingBox(stage.lastDrawnFrame);
+			boundingBox = renderObject.getBoundingBox(stage.lastDrawnFrame);
 		}
 		
 		var ex = e.offsetX;

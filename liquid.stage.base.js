@@ -17,7 +17,7 @@ Liquid.Stage = function f_Liquid_Stage_constructor (canvas, opts) {
 	stage.setupEventHandling();
 	
 	stage.clearStatus();
-}
+};
 
 Liquid.Stage.supported = function f_Liquid_Stage_supported (canvas) {
 	canvas = canvas || document.createElement('canvas');
