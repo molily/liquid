@@ -1,6 +1,6 @@
 Liquid.Workers = {
 	
-	supported : !!(window.Worker && window.JSON && JSON.stringify && JSON.parse),
+	supported : !!(window.Worker && window.JSON && window.JSON.stringify && window.JSON.parse),
 	
 	all : [],
 	idle : {},

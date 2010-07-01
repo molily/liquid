@@ -79,7 +79,8 @@ Liquid.Lib = {
 			//console.log('f_Liquid_Lib_getJSON_callback');
 			var input;
 			if (typeof jsonInput == 'string' && jsonInput.length > 0) {
-				if (window.JSON && JSON.parse) {
+				var JSON = window.JSON;
+				if (JSON && JSON.parse) {
 					input = JSON.parse(jsonInput);
 				} else {
 					input = eval('(' + jsonInput + ')');
