@@ -34,11 +34,13 @@ Liquid.Workers = {
 	},
 	
 	createJob : function f_Liquid_Workers_createJob (job) {
-		//console.log('f_Liquid_Workers_createJob', job);
 		var liquidWorkers = this;
+		//console.log('f_Liquid_Workers_createJob', job, 'supported?', liquidWorkers.supported);
+		
 		if (!liquidWorkers.supported) {
 			return false;
 		}
+		
 		liquidWorkers.jobs.push(job);
 		liquidWorkers.allocateJobs();
 		return true;
