@@ -41,7 +41,7 @@
 	function MyRenderObject () {
 		this.x = rand(0, stage.width);
 		this.y = rand(0, stage.height);
-		this.force = rand(1, 5);
+		this.force = rand(.8, 6);
 	}
 	
 	MyRenderObject.prototype = {
@@ -51,12 +51,14 @@
 		renderDirectly : true,
 		
 		active : false,
+		hover : false,
 		
 		circle : new Liquid.Circle,
 		radius : 0,
 		
 		radii : {
 			normal : 5,
+			hover : 6,
 			active : 7
 		},
 		
@@ -65,9 +67,13 @@
 				stroke : { r : 0, g : 150, b : 0 },
 				fill : { r : 0, g : 180, b : 0 }
 			},
-			active : {
+			hover : {
 				stroke : { r : 0, g : 200, b : 0 },
 				fill : { r : 0, g : 220, b : 0 }
+			},
+			active : {
+				stroke : { r : 200, g : 0, b : 0 },
+				fill : { r : 220, g : 0, b : 0 }
 			}
 		},
 		
@@ -80,16 +86,16 @@
 		
 		mouseover : function () {
 			stage.setStatus('hover');
-			this.active = true;
+			this.hover = true;
 		},
 		
 		mouseout : function () {
 			stage.clearStatus();
-			this.active = false;
+			this.hover = false;
 		},
 		
 		click : function () {
-			this.active = true;
+			this.active = !this.active;
 		},
 		
 		boundingBox : null,
@@ -98,7 +104,7 @@
 		getBoundingBox : function f_AbstractNode_getBoundingBox (frame) {
 			var ro = this;
 			
-			var tolerance = 3;
+			var tolerance = 4;
 			var radius = (ro.currentRadius / 2) + tolerance;
 			
 			var x = ro.x;
@@ -122,14 +128,14 @@
 		
 		draw : function (context) {
 			var ro = this;
-			var active = ro.active;
+			var status = ro.active ? 'active' : (ro.hover ? 'hover' : 'normal');
 		
 			// Get radius
-			var radius = ro.radii[active ? 'active' : 'normal'];
+			var radius = ro.radii[status];
 			ro.currentRadius = radius;
 			
 			// Get style
-			var styles = ro.styles[active ? 'active' : 'normal'];
+			var styles = ro.styles[status];
 			var stroke = styles.stroke;
 			var fill = styles.fill;
 			
@@ -153,7 +159,7 @@
 		});
 		stage.orderByZIndex = false;
 		
-		for (var i = 0; i < 100; i++) {
+		for (var i = 0; i < 200; i++) {
 			var ro = new MyRenderObject();
 			stage.addChild(ro);
 		}
